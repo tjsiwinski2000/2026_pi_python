@@ -1,0 +1,15 @@
+{% extends 'pi_python/base.html' %}
+{% block content %}
+    <table style="margin-left: 0; margin-right: auto;">
+
+        <tbody><tr >
+            <td><strong>San Antonio Weather:</strong></td>
+          {% for line in weather_report %}
+            {# Show the first line always, hide the rest #}
+                <td style="width: 5%;"><span style="font-size: 2.0rem;">{{ line.icon }}</span></td>
+                <td class="align-middle"> {{ line.temperature }} {{ line.description }}</td>
+          {% endfor %}
+        </tr></tbody>
+      </table>
+
+{% endblock content %}

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pi_Python-2026</title>
+
+  {% load django_bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {% block header %}{% endblock header %}
+</head>
+<body>
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <div class= "alert alert-{{ message.tags }}" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> </button>
+        </div>
+      {% endfor %}
+  </ul>
+{% endif %}
+  <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'pi_python:index' %}">
+        Pi-Python-2026</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Code 
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'pi_python:index' %}">
+                        Snippets</a></li>
+                    <li><a  href="{% url 'pi_python:index' %}">
+                      Add A Shop</a></li>
+                </ul> 
+            </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about_me">About Me</a></li>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Guest Book
+              </a>
+              <ul class="dropdown-menu">
+                <li><a  href="{% url 'pi_python:index' %}">
+                  Sign Guest Book!</a></li>
+                <li> <a  href="{% url 'pi_python:index' %}">
+                    Show Guest Book</a></li>
+              </ul> 
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Diversions
+            </a>
+            <ul class="dropdown-menu">
+              <li><a  href="{% url 'pi_python:index' %}">
+                HangMan</a></li>
+                {% if user.is_authenticated %}
+                <li><a  href="{% url 'pi_python:index' %}">
+                  Chess!</a></li>
+                {% endif %}
+                
+            </ul> 
+        </li>
+        </ul> 
+
+        
+        <!-- End of links on left side of navbar -->
+
+        <!-- Account-related links -->
+        <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <span class="navbar-text me-2">Hello, {{ user.username }}.
+                </span></li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'pi_python:temp' %}">
+                  Register</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'pi_python:temp' %}">
+                  Log in</a></li>
+          {% endif %}
+
+        </ul> <!-- End of account-related links -->
+
+        {% if user.is_authenticated %}
+          <form action="{% url 'pi_python:index' %}" method='post'>
+            {% csrf_token %}
+            <button name='submit' class='btn btn-outline-secondary btn-sm'>
+              Log out</button>
+          </form>
+        {% endif %}
+
+      </div> <!-- Closes collapsible parts of navbar -->
+
+    </div> <!-- Closes navbar's container -->
+  </nav> <!-- End of navbar -->
+
+  <main class="container">
+    
+      {% block page_header %}{% endblock page_header %}
+    
+
+    <div>
+      {% block content %}{% endblock content %}
+    </div>
+    <!-- <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success!</strong> The CSS and JS are working.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div> -->
+  </main>
+
+</body>
+</html>
