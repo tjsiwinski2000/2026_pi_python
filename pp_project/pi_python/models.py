@@ -8,6 +8,7 @@ class Topic(models.Model):
     def __str__(self):
         """ Return a string representation of the model """
         return self.text
+
 class Entry(models.Model):
     """ An entry in our story or topic """
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
