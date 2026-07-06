@@ -9,4 +9,10 @@ app_name = 'pi_python'
 urlpatterns = [
     path('', views.index, name='index'),
     path('temp/', views.index, name='temp'),
+    # page that shows all topics
+    path('topics/', views.topics, name='topics'),
+    # detail page for a single topic
+    path('topics/<int:topic_id>/', views.topic, name='topic'),
+    # Page for adding a enw topic.
+    path('new_topic/', views.new_topic, name='new_topic')
 ]

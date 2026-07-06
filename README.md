@@ -6,3 +6,7 @@ weather added to index.html
 update sqlite
 - ✅ entries
 - ✅ topics added 
+
+## 0705-2026 ##
+✅added topics.html working shows two entries
+❓added topic.html  untested 540pm

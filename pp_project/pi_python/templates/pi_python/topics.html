@@ -1,0 +1,17 @@
+{% extends 'pi_python/base.html' %}
+{% block content %}
+
+<p>Topics</p>
+
+<ul>
+    {% for topic in topics %}
+      <li>
+        <a href="{% url 'pi_python:topic' topic.id %}">
+        {{topic.text}}</a></li>
+    {% empty %}
+      <li>No topics have been added yet.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'pi_python:new_topic' %}">Add a new topic</a>
+{% endblock content %}
