@@ -10,3 +10,8 @@ update sqlite
 ## 0705-2026 ##
 ✅added topics.html working shows two entries
 ❓added topic.html  untested 540pm
+
+## 0706-2026 ##
+✅added topics.html working shows two entries
+✅added topic.html working
+✅ add topic form working
