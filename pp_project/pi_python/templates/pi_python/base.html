@@ -85,28 +85,23 @@
         <!-- Account-related links -->
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
 
-          {% if user.is_authenticated %}
-            <li class="nav-item">
-              <span class="navbar-text me-2">Hello, {{ user.username }}.
-                </span></li>
-          {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'pi_python:temp' %}">
-                  Register</a></li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'pi_python:temp' %}">
-                  Log in</a></li>
-          {% endif %}
-
+          <li class="nav-item">
+        {% if user.is_authenticated %}
+          Hello, {{user.username}}
+        {% else %}
+          <a href="{% url 'accounts:register' %}">Register</a>
+          <a href="{% url 'accounts:login' %}">Log in</a>
+        {% endif %}
+        </li>
         </ul> <!-- End of account-related links -->
 
-        {% if user.is_authenticated %}
-          <form action="{% url 'pi_python:index' %}" method='post'>
+
+          <!-- <form action="{% url 'pi_python:index' %}" method='post'>
             {% csrf_token %}
             <button name='submit' class='btn btn-outline-secondary btn-sm'>
               Log out</button>
-          </form>
-        {% endif %}
+          </form> -->
+        
 
       </div> <!-- Closes collapsible parts of navbar -->
 
@@ -126,6 +121,12 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div> -->
   </main>
-
+  {% if user.is_authenticated %}
+    <hr />
+    <form action="{% url 'accounts:logout' %}" method='post'>
+      {% csrf_token %}
+      <button name="submit">Log out</button>
+    </form>
+  {% endif %}
 </body>
 </html>

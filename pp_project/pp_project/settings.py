@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['192.168.86.27', 'localhost', '127.0.0.1']
 INSTALLED_APPS = [
     # My Apps,
     'pi_python',
+    'accounts',
     'django_bootstrap5',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -118,3 +119,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# My settings.
+LOGIN_REDIRECT_URL = 'pi_python:index'
+LOGOUT_REDIRECT_URL='pi_python:index'
+LOGIN_URL = 'accounts:login'
