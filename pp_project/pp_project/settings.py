@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-hjw#$fc!-2)irn26h2f&z=v7(gxv64w=u1@ua999^_4mn^on-t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.86.27', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.86.20', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -34,7 +34,12 @@ INSTALLED_APPS = [
     # My Apps,
     'pi_python',
     'accounts',
+    "chatbot",
+    
+    #Third party apps.
     'django_bootstrap5',
+    
+    # Default django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

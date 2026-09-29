@@ -2,13 +2,16 @@ import requests
 import time
 from datetime import datetime, timedelta
 from .new_weather_codes import OPENWEATHER_CODES
+import os
+
 
 def get_weather(unit):
     # San Antonio, Texas
     MY_LAT = 29.602400
     MY_LONG = -98.393089
 
-    api_key = "d9d63ca3b4ff15ad9ad44471ee221661"
+    api_key = os.environ.get("WEATHER_API_KEY")
+    
     url_weather = "https://api.openweathermap.org/data/2.5/forecast"
     if unit == 'C':
         metric_or_imperial = 'metric'

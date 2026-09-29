@@ -15,6 +15,7 @@ def check_topic_owner(topic_owner, current_user):
 def index(request):
     weather = get_weather('F')
     context = {'weather_report' : weather,'unit' : 'F'}
+    print(request.session.get('user_location'))
     return render(request, 'pi_python/index.html', context)
 
 def temp(request):
@@ -100,4 +101,7 @@ def edit_entry(request, entry_id):
     context = {'entry': entry, 'topic': topic, 'form':form}
     return render(request, 'pi_python/edit_entry.html', context)
  
+def testing(request):
+    """ Show testing 0810-2026 """
+    return render(request,'pi_python/0810index.html')
       

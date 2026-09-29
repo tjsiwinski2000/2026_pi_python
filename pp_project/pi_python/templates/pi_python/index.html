@@ -12,4 +12,31 @@
         </tr></tbody>
       </table>
 
+
+    <!-- <script>
+      // Get user's location once when page loads
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+              alert("Lat: " + position.coords.latitude + ", Lon: " + position.coords.longitude);
+          });
+      }
+  </script> -->
+  
+  <script>
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            alert("Lat: " + position.coords.latitude + ", Lon: " + position.coords.longitude);
+  
+            const data = new FormData();
+            data.append("lat", position.coords.latitude);
+            data.append("lon", position.coords.longitude);
+  
+            fetch("/chatbot/save-location/", {
+                method: "POST",
+                headers: {"X-CSRFToken": "{{ csrf_token }}"},
+                body: data
+            });
+        });
+    }
+  </script>
 {% endblock content %}
