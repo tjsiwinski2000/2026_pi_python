@@ -50,7 +50,7 @@ print(r.json())
 >>> print(r.json())
 {'reply': [{'type': 'text', 'text': 'The weather in Chicago is 76.6°F with scattered clouds.', 'extras': {'signature': 'EmAKXgFpFH0Tl8/N5/MgZRT/W/EpQTB1hwuRHSzb5301sG4aCfPXHCBfXz2b3mXxR3nCV4L3ZWGBGOEYR1+xPG7jDLQWA9uLnNxmY8tQotgdI6gYXnMNb6Sw66pLO6ZDdQo='}}]}
 
-MUST DO
+## python manage.py shell [test working] ##
    from django.test import Client
    c = Client()
    s = c.session
@@ -63,3 +63,36 @@ MUST DO
        HTTP_HOST="localhost",
    )
    print(r.json())
+
+
+### next items 5:00 pm 0929-2026 ###
+
+**Where things stand**
+- `chat_reply` view is done and tested from the shell
+- `chat-reply/` path is in `chatbot/urls.py`
+- Location fix works: the saved lat/lon is added to the agent's input, and the same question now gives Chicago every time
+
+**Cleanup**
+1. Remove the temporary `print("agent_input:", agent_input)` line from `chat_reply` (and the `print` in `save_location` if you no longer need it).
+
+**Browser side (`index.html`)**
+2. Look at the existing chat markup: the input box, the send button or `<form>`, and the area where messages show up.
+3. If the old Flask form (posting to `/send`) is still there, change it so it doesn't reload the page, or have the button call JavaScript instead.
+4. Write a `sendMessage()` function in the same `<script>` block as the `save-location` fetch. It should:
+   - read the text from the input box
+   - `fetch("/chatbot/chat-reply/", ...)` with:
+     - `method: "POST"`
+     - `"X-CSRFToken": "{{ csrf_token }}"` in the headers
+     - `"Content-Type": "application/json"` in the headers
+     - `body: JSON.stringify({ message: <the text> })`
+   - read the JSON response and show `reply` on the page
+5. Make the send button (or form submit) call `sendMessage()`.
+
+**Test in the browser**
+6. Ask about a named city, then ask "what's the weather here?" and check that the location comes through.
+7. Reload the page and check what happens to the chat history (`session["messages"]` is saved, but the page has to display it).
+
+**Later**
+8. Deployment to PythonAnywhere, including the Python version (the nested-quote f-strings need 3.12+) and setting the API keys as environment variables.
+
+When you're back, paste the chat section of `index.html` and we'll start at step 2.

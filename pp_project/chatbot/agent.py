@@ -7,6 +7,8 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 import uuid
 import os
 from django.conf import settings
+# importing using full app path
+from chatbot.documents import load_documents
 
 # 0928-2026 removing 
 # GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
@@ -56,6 +58,8 @@ llm = ChatGoogleGenerativeAI(
     temperature=0.7,
 )
 
+data_files = load_documents()
+print(data_files)
 system_prompt = """
 You are a helpful weather assistant. 
 YOUR WORKFLOW:
@@ -65,7 +69,9 @@ YOUR WORKFLOW:
 
 2. If the user provides a city, call get_weather(city) directly.
 3. Only mention the temperature in Fahrenheit for US, Liberia, and Burma and only in Celsius for all other regions
+4. You also answer questions about these documents: 
 """
+system_prompt += data_files
 
 # Simple approach - just use the filename directly
 # this approach instead [with] keeps connection to DB open

@@ -246,18 +246,9 @@
                 value: 'new'
               }
             ];
-            fetch("/chatbot/chat-reply/", {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ message: msg }),
-            })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                generate_message(data.reply, 'user');
-            });
+          setTimeout(function() {      
+            generate_message(msg, 'user');  
+          }, 1000)
           
         })
         
