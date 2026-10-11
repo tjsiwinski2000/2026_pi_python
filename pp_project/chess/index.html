@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stockfish Web Chess</title>
+  
+  <!-- Chessboard CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css">
+  
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #0f172a;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    #board { width: 450px; margin-bottom: 15px; }
+    #status { font-weight: bold; margin-bottom: 12px; color: #38bdf8; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+
+  <div id="status">Loading Engine...</div>
+  <div id="board"></div>
+
+  <!-- External Libraries -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
+
+  <script>
+    const game = new Chess();
+    let board = null;
+    let engine = null;
+
+    // Remote SVG mapping for piece images from Wikimedia Commons
+    const PIECE_URLS = {
+      wP: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Chess_plt45.svg',
+      wR: 'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
+      wN: 'https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg',
+      wB: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg',
+      wQ: 'https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg',
+      wK: 'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
+      bP: 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Chess_pdt45.svg',
+      bR: 'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rdt45.svg',
+      bN: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Chess_ndt45.svg',
+      bB: 'https://upload.wikimedia.org/wikipedia/commons/9/98/Chess_bdt45.svg',
+      bQ: 'https://upload.wikimedia.org/wikipedia/commons/4/47/Chess_qdt45.svg',
+      bK: 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Chess_kdt45.svg'
+    };
+
+    // Load Stockfish asynchronously via Blob URL to bypass CORS Web Worker block
+    fetch('https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js')
+      .then(res => res.text())
+      .then(code => {
+        const blob = new Blob([code], { type: 'application/javascript' });
+        engine = new Worker(URL.createObjectURL(blob));
+
+        engine.postMessage('uci');
+        engine.postMessage('ucinewgame');
+
+        engine.onmessage = function (event) {
+          const line = event.data;
+          
+          if (line.startsWith('bestmove')) {
+            const moveStr = line.split(' ')[1];
+            if (moveStr) {
+              const from = moveStr.substring(0, 2);
+              const to = moveStr.substring(2, 4);
+              const promotion = moveStr.length > 4 ? moveStr.substring(4, 5) : 'q';
+
+              game.move({ from, to, promotion });
+              board.position(game.fen());
+              updateStatus();
+            }
+          }
+        };
+
+        initBoard();
+        document.getElementById('status').innerText = "Your Turn (White)";
+      })
+      .catch(err => {
+        document.getElementById('status').innerText = "Failed to load Stockfish engine.";
+        console.error(err);
+      });
+
+    function onDragStart(source, piece) {
+      if (game.game_over() || piece.search(/^b/) !== -1) return false;
+    }
+
+    function onDrop(source, target) {
+      const move = game.move({
+        from: source,
+        to: target,
+        promotion: 'q'
+      });
+
+      if (move === null) return 'snapback';
+
+      updateStatus();
+
+      if (!game.game_over() && engine) {
+        document.getElementById('status').innerText = 'Stockfish is thinking...';
+        engine.postMessage(`position fen ${game.fen()}`);
+        engine.postMessage('go depth 10'); 
+      }
+    }
+
+    function onSnapEnd() {
+      board.position(game.fen());
+    }
+
+    function updateStatus() {
+      if (game.in_checkmate()) {
+        document.getElementById('status').innerText = 'Game Over: Checkmate!';
+      } else if (game.in_draw()) {
+        document.getElementById('status').innerText = 'Game Over: Draw!';
+      } else {
+        document.getElementById('status').innerText = game.turn() === 'w' ? 'Your Turn' : 'Stockfish Thinking...';
+      }
+    }
+
+    function initBoard() {
+      board = Chessboard('board', {
+        draggable: true,
+        position: 'start',
+        pieceTheme: function (piece) {
+          return PIECE_URLS[piece];
+        },
+        onDragStart: onDragStart,
+        onDrop: onDrop,
+        onSnapEnd: onSnapEnd
+      });
+    }
+  </script>
+</body>
+</html>

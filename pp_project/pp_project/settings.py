@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'pi_python',
     'accounts',
     "chatbot",
+    "hangman",
+    "animals",
     
     #Third party apps.
     'django_bootstrap5',
@@ -70,6 +72,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "animals.context_processors.animal_of_the_day",
+
             ],
         },
     },
@@ -129,3 +133,6 @@ STATIC_URL = 'static/'
 LOGIN_REDIRECT_URL = 'pi_python:index'
 LOGOUT_REDIRECT_URL='pi_python:index'
 LOGIN_URL = 'accounts:login'
+# 1010-2026 add for animal
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"

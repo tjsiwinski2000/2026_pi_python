@@ -7,12 +7,8 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 import uuid
 import os
 from django.conf import settings
-# importing using full app path
+# import documents() using full app path
 from chatbot.documents import load_documents
-
-# 0928-2026 removing 
-# GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
-
 
 
 def get_weather(city: str):
@@ -31,7 +27,6 @@ def get_weather(city: str):
     temperature_fahrenheit = temperature_celsius * 9/5 + 32
     return data, {'temperature_fahrenheit': temperature_fahrenheit, 'temperature_celsius': temperature_celsius}
 
-
 def get_location(lat,lon):
     """ Get the city and country for a given latitude and longitude. """
     print("lat lon", lat, lon)
@@ -49,9 +44,6 @@ def get_location(lat,lon):
         return f"{city}, {country}"
     except:
         return "Rome, Italy"
-
-
-
 
 llm = ChatGoogleGenerativeAI(
     model="gemini-flash-lite-latest",

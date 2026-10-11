@@ -33,6 +33,7 @@ def create_context(document_list):
     context =''
     for doc in document_list:
         context = context + f'_______{doc['path']}______\n{doc['content']}\n______________\n'
+        print(f'added: {doc['path']}')
     return context
 
 # context = create_context(documents)

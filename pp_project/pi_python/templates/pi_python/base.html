@@ -11,14 +11,15 @@
   {% bootstrap_javascript %}
   <!-- 0925-2026 add icons for chatbot -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+  <!-- add header below since referenced by hangman -->
+  {% block header %}{% endblock header %}
 </head>
 <body>
   {% include "pi_python/chat_widget.html" %}
   <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'pi_python:index' %}">
-          Learning Log</a>
+       YourSpace</a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
@@ -31,8 +32,14 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'pi_python:topics' %}">
               Topics</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'hangman:index' %}">
+                  HangMan</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://jeopardylabs.com/play/2025jwjeopardy" target="_blank">
+                  Jeopardy</a></li>    
         </ul> <!-- End of links on left side of navbar -->
-
+   
         <!-- Account-related links -->
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
 

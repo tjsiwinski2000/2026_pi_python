@@ -12,6 +12,38 @@
         </tr></tbody>
       </table>
 
+      <table border="2"  border-spacing: 30px;>
+        <tr><td padding: 5px;>
+
+          {% if animal_of_the_day %}
+          <div class="row align-items-start my-4">
+          
+            <!-- Left column: fun facts -->
+            <div class="col-md-5 order-2 order-md-1">
+              <h5>Do you know  the {{ animal_of_the_day.caption }} ? </h5> 
+              <ul class="list-unstyled">
+                {% for fact in animal_of_the_day.facts %}
+                  <li class="mb-2">{{ fact }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          
+            <!-- Right column: photo -->
+            <div class="col-md-7 order-1 order-md-2">
+              <figure>
+                <img src="{{ animal_of_the_day.image.url }}"
+                     alt="{{ animal_of_the_day.name }}" class="img-fluid rounded">
+                <figcaption class="mt-2">
+                  <strong>{{ animal_of_the_day.caption }}</strong>
+                 
+                </figcaption>
+              </figure>
+            </div>
+          
+          </div>
+          {% endif %}
+      </td></tr></table>
+
 
     <!-- <script>
       // Get user's location once when page loads
