@@ -57,7 +57,7 @@
   <script>
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-            alert("Lat: " + position.coords.latitude + ", Lon: " + position.coords.longitude);
+            console.log("Lat: " + position.coords.latitude + ", Lon: " + position.coords.longitude);
   
             const data = new FormData();
             data.append("lat", position.coords.latitude);

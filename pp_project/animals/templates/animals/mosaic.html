@@ -1,0 +1,47 @@
+{% extends 'pi_python/base.html' %}
+{% block content %}
+<p>Animals: {{ animals|length }}</p>
+<style>
+    .mosaic { display: grid; grid-template-columns: repeat(auto-fill, 150px); gap: 10px; }
+    .tile { border: 4px solid transparent; cursor: pointer; }
+    .tile.selected { border-color: gold; }
+    /* .tile img { width: 100%; height: 150px; object-fit: cover; display: block; } */
+    .tile img { width: 100%; height: 150px; object-fit: contain; background: #1a3a2a; display: block; }
+    .tile ul { display: none; }
+    
+    @media (max-width: 600px) {
+    .mosaic { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .tile img { height: 100px; }
+}
+  </style>
+  
+  <div class="mosaic">
+    {% for animal in animals %}
+      <div class="tile" data-name="{{ animal.name }}">
+        <img src="{{ animal.image.url }}" alt="{{ animal.name }}">
+        <ul>
+          {% for fact in animal.facts %}
+            <li>{{ fact }}</li>
+            <br>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
+  
+  <div id="fact-panel"></div>
+
+  <script>
+    const tiles = document.querySelectorAll(".tile");
+    const panel = document.getElementById("fact-panel");
+
+    // note:one click handler does three things in this order: 1.clear selected from all tiles, 2.add it to the clicked tile, then 3.copy that tile’s facts into the panel:
+    tiles.forEach(function (tile) {
+      tile.addEventListener("click", function () {
+        tiles.forEach(function (t) { t.classList.remove("selected"); });
+        tile.classList.add("selected");
+        panel.innerHTML = "<ul>" + tile.querySelector("ul").innerHTML + "</ul>";
+      });
+    });
+  </script>
+  {% endblock content %}

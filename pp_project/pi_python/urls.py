@@ -6,6 +6,7 @@ from . import views
 
 app_name = 'pi_python'
 
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('temp/', views.index, name='temp'),

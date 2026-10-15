@@ -51,7 +51,7 @@ llm = ChatGoogleGenerativeAI(
 )
 
 data_files = load_documents()
-print(data_files)
+print(data_files[:200])
 system_prompt = """
 You are a helpful weather assistant. 
 YOUR WORKFLOW:
